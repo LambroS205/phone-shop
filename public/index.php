@@ -77,12 +77,12 @@ $router->add('/checkout/process', 'POST', CheckoutController::class, 'process');
 $router->add('/checkout/success', 'GET', CheckoutController::class, 'success');
 
 // Admin Product Routes
-$router->add('/admin/products', 'GET', AdminProductController::class, 'index', [AuthMiddleware::class, RoleMiddleware::class]);
-$router->add('/admin/products/create', 'GET', AdminProductController::class, 'create', [AuthMiddleware::class, RoleMiddleware::class]);
-$router->add('/admin/products/store', 'POST', AdminProductController::class, 'store', [AuthMiddleware::class, RoleMiddleware::class]);
-$router->add('/admin/products/edit', 'GET', AdminProductController::class, 'edit', [AuthMiddleware::class, RoleMiddleware::class]);
-$router->add('/admin/products/update', 'POST', AdminProductController::class, 'update', [AuthMiddleware::class, RoleMiddleware::class]);
-$router->add('/admin/products/delete', 'POST', AdminProductController::class, 'destroy', [AuthMiddleware::class, RoleMiddleware::class]);
+$router->add('/admin/products', 'GET', AdminProductController::class, 'index', [AuthMiddleware::class, [RoleMiddleware::class, 'admin']]);
+$router->add('/admin/products/create', 'GET', AdminProductController::class, 'create', [AuthMiddleware::class, [RoleMiddleware::class, 'admin']]);
+$router->add('/admin/products/store', 'POST', AdminProductController::class, 'store', [AuthMiddleware::class, [RoleMiddleware::class, 'admin']]);
+$router->add('/admin/products/edit', 'GET', AdminProductController::class, 'edit', [AuthMiddleware::class, [RoleMiddleware::class, 'admin']]);
+$router->add('/admin/products/update', 'POST', AdminProductController::class, 'update', [AuthMiddleware::class, [RoleMiddleware::class, 'admin']]);
+$router->add('/admin/products/delete', 'POST', AdminProductController::class, 'destroy', [AuthMiddleware::class, [RoleMiddleware::class, 'admin']]);
 
 // 6. Resolve Request
 $router->resolve();

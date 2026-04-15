@@ -1,0 +1,15 @@
+# Dependencies & Runtime
+vendor/
+.env
+storage/logs/*
+!storage/logs/.gitkeep
+
+# IDE & OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml

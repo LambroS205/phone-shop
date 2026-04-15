@@ -9,7 +9,9 @@ use App\Core\Security;
 class AuthController {
     private User $userModel;
 
-    public function __construct() { $this->userModel = new User(); }
+    public function __construct(User $userModel) {
+        $this->userModel = $userModel;
+    }
 
     public function showLogin() {
         require BASE_PATH . '/app/Views/auth/login.php';

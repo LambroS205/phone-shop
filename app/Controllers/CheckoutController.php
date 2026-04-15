@@ -9,6 +9,12 @@ use App\Core\Session;
 use PDOException;
 
 class CheckoutController {
+    private Cart $cart;
+
+    public function __construct(Cart $cart) {
+        $this->cart = $cart;
+    }
+
     public function process() {
         // 1. Bắt buộc đăng nhập
         if (!Session::has('user_id')) {
@@ -16,7 +22,7 @@ class CheckoutController {
             exit;
         }
 
-        $cartItems = Cart::getItems();
+        $cartItems = $this->cart->getItems();
         if (empty($cartItems)) die("Giỏ hàng trống.");
 
         try {
@@ -51,7 +57,7 @@ class CheckoutController {
             }
 
             $db->commit(); // ✅ Thành công -> Commit
-            Cart::clear();
+            $this->cart->clear();
             header('Location: /checkout/success');
             exit;
 

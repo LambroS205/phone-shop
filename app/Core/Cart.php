@@ -39,14 +39,14 @@ class Cart {
         Session::put(self::SESSION_KEY, $cart);
     }
 
-    public function getItems(): array { return Session::get(self::SESSION_KEY, []); }
-    public function clear(): void { Session::remove(self::SESSION_KEY); }
+    public static function getItems(): array { return Session::get(self::SESSION_KEY, []); }
+    public static function clear(): void { Session::remove(self::SESSION_KEY); }
 
-    public function getTotal(): float {
-        return array_reduce($this->getItems(), fn($carry, $item) => $carry + ($item['price'] * $item['qty']), 0);
+    public static function getTotal(): float {
+        return array_reduce(self::getItems(), fn($carry, $item) => $carry + ($item['price'] * $item['qty']), 0);
     }
 
-    public function count(): int {
-        return array_reduce($this->getItems(), fn($carry, $item) => $carry + $item['qty'], 0);
+    public static function count(): int {
+        return array_reduce(self::getItems(), fn($carry, $item) => $carry + $item['qty'], 0);
     }
 }

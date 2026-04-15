@@ -6,6 +6,12 @@ use App\Core\Cart;
 use App\Core\Security;
 
 class CartController {
+    private Cart $cart;
+
+    public function __construct(Cart $cart) {
+        $this->cart = $cart;
+    }
+
     // Helper kiểm tra AJAX
     private function isAjax(): bool {
         return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
@@ -30,7 +36,7 @@ class CartController {
         $image = htmlspecialchars($_POST['image']);
 
         // 3. Xử lý Logic
-        Cart::add($id, $name, $price, $image, 1);
+        $this->cart->add($id, $name, $price, $image, 1);
 
         // 4. Trả về kết quả
         // Nếu là AJAX -> Trả JSON. Nếu không -> Redirect bình thường.
@@ -49,19 +55,16 @@ class CartController {
         exit;
     }
 
-    // ... Giữ nguyên các hàm remove, update ...
-}
-
     public function remove() {
         if (!Security::verifyCsrf($_POST['csrf_token'] ?? '')) die("Invalid CSRF");
-        Cart::remove((int)$_POST['id']);
+        $this->cart->remove((int)$_POST['id']);
         header('Location: /cart');
         exit;
     }
 
     public function update() {
         if (!Security::verifyCsrf($_POST['csrf_token'] ?? '')) die("Invalid CSRF");
-        Cart::update((int)$_POST['id'], (int)$_POST['qty']);
+        $this->cart->update((int)$_POST['id'], (int)$_POST['qty']);
         header('Location: /cart');
         exit;
     }

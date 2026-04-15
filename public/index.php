@@ -13,6 +13,7 @@ use App\Controllers\CartController;
 use App\Controllers\CheckoutController;
 use App\Controllers\AuthController;
 use App\Models\Product;
+use App\Models\User;
 
 Session::init();
 
@@ -24,21 +25,25 @@ $container->bind(Product::class, function($c) {
     return new Product();
 });
 
+$container->bind(User::class, function($c) {
+    return new User();
+});
+
 // 3. Bind Controllers (Inject Dependencies)
 $container->bind(ProductController::class, function($c) {
     return new ProductController($c->make(Product::class));
 });
 
 $container->bind(CartController::class, function($c) {
-    return new CartController();
+    return new CartController(new \App\Core\Cart());
 });
 
 $container->bind(CheckoutController::class, function($c) {
-    return new CheckoutController();
+    return new CheckoutController(new \App\Core\Cart());
 });
 
 $container->bind(AuthController::class, function($c) {
-    return new AuthController();
+    return new AuthController($c->make(User::class));
 });
 
 // 4. Khởi tạo Router với Container

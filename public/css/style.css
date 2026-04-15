@@ -103,14 +103,15 @@ img { max-width: 100%; display: block; }
 .card-body .price { color: var(--primary); font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; display: block; }
 
 /* =========================================
-   4. BUTTONS & FORMS
+   4. BUTTONS & FORMS (FIXED & SMOOTH)
    ========================================= */
 .btn {
     display: inline-flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    padding: 0.75rem 1rem;
+    min-height: 42px; /* 🔒 KHÓA CHIỀU CAO: Không cho nút co lại khi mất text */
+    padding: 0 1rem;
     background: var(--primary);
     color: white;
     border: none;
@@ -119,32 +120,47 @@ img { max-width: 100%; display: block; }
     font-size: 0.95rem;
     cursor: pointer;
     transition: background 0.2s;
+
+    /* ✅ FIX NHÁY: Ép GPU render riêng nút này */
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
+
 .btn:hover { background: var(--primary-hover); }
 .btn:active { transform: scale(0.98); }
 
-.btn-danger { background: var(--danger); }
-.btn-danger:hover { background: #dc2626; }
-
-/* Loading State cho nút */
+/* Loading State - Ổn định tuyệt đối */
 .btn.loading {
     position: relative;
-    color: transparent !important; /* Ẩn text */
-    pointer-events: none; /* Chống click spam */
+    color: transparent !important; /* Ẩn text nhưng vẫn giữ chỗ */
+    pointer-events: none;
+    transition: none; /* Tắt transition của nút khi loading để tránh giật */
 }
+
 .btn.loading::after {
     content: "";
     position: absolute;
-    width: 18px; height: 18px;
+    left: 50%;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+    /* Cách căn giữa chính xác nhất */
+    margin: -9px 0 0 -9px;
     border: 2px solid rgba(255,255,255,0.3);
     border-top-color: #fff;
     border-radius: 50%;
-    animation: spin 0.7s linear infinite;
+    animation: spin 0.6s linear infinite;
+
+    /* ✅ Animation riêng biệt */
+    will-change: transform;
 }
 
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+.btn-danger { background: var(--danger); }
+.btn-danger:hover { background: #dc2626; }
 
 /* =========================================
    5. TOAST NOTIFICATION

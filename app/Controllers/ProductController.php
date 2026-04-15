@@ -8,22 +8,21 @@ use App\Core\Session;
 class ProductController {
     private Product $model;
 
-    public function __construct() { $this->model = new Product(); }
+    // ✅ Constructor Injection: Controller nhận Model từ bên ngoài
+    public function __construct(Product $model) {
+        $this->model = $model;
+    }
 
-    // 1. Trang chủ - Hiển thị danh sách (Public)
     public function index() {
         $limit = 8;
         $page = (int)($_GET['page'] ?? 1);
         $offset = ($page - 1) * $limit;
 
-        // ✅ Gọi phương thức mới tạo trong Model
+        // Controller chỉ lo điều phối, không lo tạo Model
         $products = $this->model->getPaginated($limit, $offset);
-
-        // Phương thức này đã có sẵn trong Base Model
         $total = $this->model->countAll();
         $totalPages = ceil($total / $limit);
 
-        // Truyền biến sang View
         require BASE_PATH . '/app/Views/products/list.php';
     }
 

@@ -50,13 +50,13 @@ use App\Core\Session;
     <h3><?= htmlspecialchars($p['name']) ?></h3>
     <p class="price"><?= number_format((float)$p['price'], 0, ',', '.') ?> ₫</p>
     <!-- ✅ Form Gửi dữ liệu ngầm đến CartController -->
-    <form method="POST" action="/cart/add" style="margin-top: 10px;">
+    <form method="POST" action="/cart/add" class="ajax-cart-form">
         <input type="hidden" name="csrf_token" value="<?= App\Core\Security::csrfToken() ?>">
         <input type="hidden" name="id" value="<?= $p['id'] ?>">
         <input type="hidden" name="name" value="<?= htmlspecialchars($p['name']) ?>">
         <input type="hidden" name="price" value="<?= $p['price'] ?>">
         <input type="hidden" name="image" value="<?= htmlspecialchars($p['image']) ?>">
-        <button type="submit" class="btn" style="width: 100%;">🛒 Thêm vào giỏ</button>
+        <button type="submit" class="btn">🛒 Thêm vào giỏ</button>
     </form>
 </div>
                     </div>

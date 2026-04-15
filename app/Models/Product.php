@@ -1,13 +1,18 @@
 <?php
+declare(strict_types=1);
 namespace App\Models;
+
 use App\Core\Model;
 
 class Product extends Model {
     protected string $table = 'products';
 
-    // ✅ Thêm phương thức này để Controller gọi
+    // 🔒 Whitelist cho Product
+    protected array $fillable = [
+        'name', 'price', 'stock', 'category_id', 'description', 'image'
+    ];
+
     public function getPaginated(int $limit, int $offset): array {
-        // Dùng $this->db ở đây là hợp lệ vì đang nằm trong class kế thừa Model
         $stmt = $this->db->prepare("SELECT * FROM {$this->table} LIMIT :limit OFFSET :offset");
         $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);

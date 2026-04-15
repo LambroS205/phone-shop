@@ -29,8 +29,13 @@ class Router {
         // 1. Chạy Middleware
         $middlewares = $this->middlewareQueue[$method][$uri] ?? [];
         foreach ($middlewares as $middleware) {
-            // Middleware cũng có thể lấy từ Container nếu cần, nhưng ở đây ta new tạm
-            $instance = new $middleware();
+            // Check if middleware has parameters (array format: [MiddlewareClass, param1, param2...])
+            if (is_array($middleware)) {
+                $middlewareClass = array_shift($middleware);
+                $instance = new $middlewareClass(...$middleware);
+            } else {
+                $instance = new $middleware();
+            }
             if (!$instance->handle()) {
                 return;
             }

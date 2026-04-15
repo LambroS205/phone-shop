@@ -21,6 +21,7 @@ class Session {
     public static function get(string $key, mixed $default = null): mixed { return $_SESSION[$key] ?? $default; }
     public static function has(string $key): bool { return isset($_SESSION[$key]); }
     public static function remove(string $key): void { unset($_SESSION[$key]); }
+    public static function forget(string $key): void { unset($_SESSION[$key]); }
 
     public static function regenerate(): void {
         if (!session_id()) self::init();
